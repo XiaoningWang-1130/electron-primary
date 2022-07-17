@@ -41,7 +41,12 @@ const menuTemplate = [
                     createAddWindow()
                 }
             },
-            { label: '清空信息' },
+            {
+                label: '清空信息',
+                click: () => {
+                    win.webContents.send('info:clear')
+                }
+            },
             {
                 label: '退出',
                 accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
@@ -97,7 +102,8 @@ const createAddWindow = () => {
 
 const eventListener = () => {
     ipcMain.on('info:add', (e, val) => {
-        win.webContents.send('info:add',val)
+        win.webContents.send('info:add', val)
+        addWin.close()
     })
 }
 eventListener()

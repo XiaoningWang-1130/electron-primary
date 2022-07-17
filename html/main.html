@@ -77,6 +77,12 @@
             })
         }
         domListener()
+
+        ipcRenderer.on('info:clear', (e) => {
+            ul.innerHTML = ''
+            ul.className = ''
+            spaceSection.style.display = 'block'
+        })
     </script>
 </body>
 
