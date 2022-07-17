@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { app, BrowserWindow, Menu } = electron;
+const { app, BrowserWindow, Menu, ipcMain } = electron;
 const path = require('path');
 const { checkServerIdentity } = require('tls');
 const url = require('url')
@@ -10,7 +10,9 @@ let win = null;
 let addWin = null
 app.on('ready', () => {
     win = new BrowserWindow({
-        width: 800, height: 600
+        width: 800, height: 600, webPreferences: {
+            nodeIntegration: true
+        }
     });
     win.loadURL(url.format({
         pathname: path.resolve(__dirname, './html/main.html'),
@@ -82,7 +84,9 @@ checkEnv()
 
 const createAddWindow = () => {
     addWin = new BrowserWindow({
-        width: 600, height: 300
+        width: 600, height: 300, webPreferences: {
+            nodeIntegration: true
+        }
     });
     addWin.loadURL(url.format({
         pathname: path.resolve(__dirname, './html/add.html'),
@@ -90,3 +94,11 @@ const createAddWindow = () => {
         slashes: true
     }))
 }
+
+const eventListener = () => {
+    ipcMain.on('info:add', (e, val) => {
+        win.webContents.send('info:add',val)
+        console.log(val)
+    })
+}
+eventListener()
