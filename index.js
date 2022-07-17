@@ -7,6 +7,7 @@ const url = require('url')
 console.log()
 
 let win = null;
+let addWin = null
 app.on('ready', () => {
     win = new BrowserWindow({
         width: 800, height: 600
@@ -20,6 +21,11 @@ app.on('ready', () => {
     //定义菜单
     const mainMenu = Menu.buildFromTemplate(menuTemplate)
     Menu.setApplicationMenu(mainMenu)
+
+    // 点击主窗口的关闭
+    win.on('closed', () => {
+        app.quit()
+    })
 })
 
 // 顶部菜单模板
@@ -27,7 +33,12 @@ const menuTemplate = [
     {
         label: '文件',
         submenu: [
-            { label: '新增信息' },
+            {
+                label: '新增信息',
+                click: () => {
+                    createAddWindow()
+                }
+            },
             { label: '清空信息' },
             {
                 label: '退出',
@@ -67,3 +78,15 @@ const checkEnv = () => {
     }
 }
 checkEnv()
+
+
+const createAddWindow = () => {
+    addWin = new BrowserWindow({
+        width: 600, height: 300
+    });
+    addWin.loadURL(url.format({
+        pathname: path.resolve(__dirname, './html/add.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+}
