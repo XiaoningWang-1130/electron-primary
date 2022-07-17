@@ -1,7 +1,10 @@
 const electron = require('electron')
 const { app, BrowserWindow, Menu } = electron;
-const path = require('path')
+const path = require('path');
+const { checkServerIdentity } = require('tls');
 const url = require('url')
+
+console.log()
 
 let win = null;
 app.on('ready', () => {
@@ -34,7 +37,12 @@ const menuTemplate = [
                 }
             }
         ]
-    }, {
+    },
+]
+
+const checkEnv = () => {
+    let env = process.env.NODE_ENV
+    let devConfig = {
         label: '开发中工具',
         submenu: [
             {
@@ -51,5 +59,11 @@ const menuTemplate = [
             }
         ]
     }
-]
+    if (env !== 'production') {
+        menuTemplate.push(
+            devConfig
+        )
 
+    }
+}
+checkEnv()
