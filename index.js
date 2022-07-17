@@ -98,7 +98,6 @@ const createAddWindow = () => {
 const eventListener = () => {
     ipcMain.on('info:add', (e, val) => {
         win.webContents.send('info:add',val)
-        console.log(val)
     })
 }
 eventListener()
