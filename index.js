@@ -59,6 +59,9 @@ const menuTemplate = [
 ]
 
 const checkEnv = () => {
+    if(process.env.NODE_ENV == undefined) {
+        process.env.NODE_ENV= 'production'
+    }
     let env = process.env.NODE_ENV
     let devConfig = {
         label: '开发中工具',
